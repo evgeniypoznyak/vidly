@@ -1,0 +1,274 @@
+swagger: "2.0"
+info:
+  title: Vidly
+  description: API description in Markdown.
+  version: 1.0.0
+  contact:
+    name: Evgeniy Poznyak
+    url: "https://evgeniy.poznyaks.com"
+    email: evgeniy.poznyak@gmail.com
+host: localhost:3000
+basePath: /api/
+tags:
+  - name: "genre"
+    description: "Everything about my genres"
+    externalDocs:
+      description: "Find out more"
+      url: "https://evgeniy.poznyaks.com"
+  - name: "movie"
+    description: "Everything about my movies"
+    externalDocs:
+      description: "Find out more"
+      url: "https://evgeniy.poznyaks.com"
+consumes:
+  - application/json # format of the responses to the client
+produces:
+  - application/json
+schemes:
+  - http
+
+paths:
+  /movies:
+    get:
+      tags:
+        - "movie"
+      summary: Return all movies with genres.
+      description: Optional extended description in Markdown.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MovieWithGenres'
+        404:
+          description: When no movies was returned
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+  /genres:
+    get:
+      tags:
+        - "genre"
+      summary: Return all genres with assotiated movies
+      description: Optional extended description in Markdown.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GenreWithMovies'
+        404:
+          description: When no movies was returned
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+    post:
+      tags:
+        - "genre"
+      summary: Store new genre
+      description: Optional extended description in Markdown.
+      parameters:
+        - in: body
+          name: genre
+          description: Store one genre object
+          required: true
+          schema:
+            $ref: '#/definitions/GenreWithMovies'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GenreWithMovies'
+        404:
+          description: When no movies was returned
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+
+  /genres/{id}:
+    get:
+      tags:
+        - "genre"
+      summary: Return one genre by id
+      description: Optional
+      parameters:
+        - name: id
+          in: path
+          description: Get one project by id
+          type: integer
+          required: true
+        - in: body
+          name: genre
+          description: Genre object
+          required: true
+          schema:
+            $ref: '#/definitions/GenreWithMovies'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GenreWithMovies'
+        404:
+          description: When no movies was returned
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+    put:
+      tags:
+        - "genre"
+      summary: Return update genre with assotiated movies
+      description: All Mark down
+      parameters:
+        - name: id
+          in: path
+          description: Update one project by id
+          type: integer
+          required: true
+        - in: body
+          name: genre
+          description: Genre object
+          required: true
+          schema:
+            $ref: '#/definitions/GenreWithMovies'
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GenreWithMovies'
+        404:
+          description: When no movies was returned
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+    delete:
+      tags:
+        - "genre"
+      parameters:
+        - name: id
+          in: path
+          description: Delete one project by id
+          type: integer
+          required: true
+      summary: Delete one genre by id
+      description: Optional extended description in Markdown.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Success
+        404:
+          description: When no genre was found by provided id
+          schema:
+            $ref: '#/definitions/NotFoundError'
+        default:
+          description: Something wrong happened
+          schema:
+            $ref: '#/definitions/GeneralError'
+definitions:
+  # A general message schema in case of an error
+  GeneralError:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  # A Not found error that is sent back in case no results are found for the
+  # requested resource
+  NotFoundError:
+    required:
+      - message
+      - hint
+    properties:
+      message:
+        type: string
+      hint:
+        type: string
+
+  Movie:
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+
+  MovieWithGenres:
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      genres:
+        $ref: '#/definitions/Genre'
+
+  Genre:
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+
+  GenreWithMovies:
+    required:
+      - id
+      - name
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      movies:
+        $ref: '#/definitions/Movie'
