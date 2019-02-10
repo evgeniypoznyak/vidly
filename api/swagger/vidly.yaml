@@ -253,21 +253,15 @@ definitions:
 
   Genre:
     required:
-      - id
       - name
     properties:
-      id:
-        type: integer
       name:
         type: string
 
   GenreWithMovies:
     required:
-      - id
       - name
     properties:
-      id:
-        type: integer
       name:
         type: string
       movies:
