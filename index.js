@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
 const genres = require('./routes/genres');
+const home = require('./routes/home');
 
 app.use(express.json());
+app.use('/', home);
 app.use('/api/genres', genres);
 
-app.get('/', (req, res) => {
-  return res.send('Hello World!');
-});
+
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'http://localhost';
