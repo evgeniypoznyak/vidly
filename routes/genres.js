@@ -50,9 +50,7 @@ router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const deletedGenre = await Genres.findByIdAndDelete(id);
-        if (deletedGenre) {
-            return res.status(200).send({message: 'Genre has been deleted', genre: deletedGenre});
-        }
+        return res.status(200).send({message: 'Genre has been deleted', genre: deletedGenre});
     } catch (e) {
         return res.status(404).send(`genre for ${id} not found`);
     }
