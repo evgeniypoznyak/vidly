@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
             name: req.body.name,
             phone: req.body.phone,
         });
-        const result = newCustomer.save();
+        const result = await newCustomer.save();
         return res.status(200).send(result);
     }catch (e) {
         return res.status(400).send('No Customers is been saved');
@@ -88,6 +88,7 @@ const validateCustomer = (customer) => {
         phone: Joi.string()
             .min(2)
             .max(50)
+            .required()
     };
     return Joi.validate(customer, schema);
 };
