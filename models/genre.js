@@ -3,13 +3,13 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true});
 mongoose.set('debug', true);
 
-const genresSchema = new mongoose.Schema({
+const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
 });
-const Genre = mongoose.model('Genres', genresSchema);
+const Genre = mongoose.model('Genres', genreSchema);
 
 const validateGenre = (genre) => {
     const schema = {
@@ -21,4 +21,5 @@ const validateGenre = (genre) => {
 };
 
 exports.Genre = Genre;
+exports.genreSchema = genreSchema;
 exports.validate = validateGenre;
