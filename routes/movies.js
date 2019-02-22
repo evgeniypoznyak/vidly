@@ -52,8 +52,16 @@ router.put(':id', async (req, res) => {
         if (error) return res.status(400).send(error.details.slice().shift().message);
         const genre = await Genre.findById(req.body.genreId);
         if (!genre) return res.status(400).send('Invalid genre');
-        const movie = await Movie.findById(id);
-        // todo not finished yet.
+        const updatedMovie = await Movie.findOneAndUpdate({_id: id}, {
+            title: req.body.title,
+            genre: {
+                _id: genre._id,
+                name: genre.name,
+            },
+            numberInStock: req.body.numberInStock,
+            dailyRentalRate: req.body.dailyRentalRate
+        });
+        return res.status(200).send(updatedMovie)
     } catch (e) {
         return res.status(400).send('No movies has been updated')
     }
