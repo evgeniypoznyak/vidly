@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const genres = require('./routes/genres');
 const movies = require('./routes/movies');
+const rentals = require('./routes/rentals');
 const customers = require('./routes/customers');
 const home = require('./routes/home');
 
@@ -9,6 +10,7 @@ app.use(express.json());
 app.use('/', home);
 app.use('/api/genres', genres);
 app.use('/api/movies', movies);
+app.use('/api/rentals', rentals);
 app.use('/api/customers', customers);
 
 
