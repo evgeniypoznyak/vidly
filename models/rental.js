@@ -68,4 +68,4 @@ const validateRental = (value) => {
 };
 
 exports.Rental = Rental;
-exports.validate = validateRental();
+exports.validate = validateRental;
