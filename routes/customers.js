@@ -12,16 +12,16 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const result = validate(req.body);
-    if (result.error) return res.status(400).send(result.error.details.slice().shift().message);
+    const {error} = validate(req.body);
+    if (error) return res.status(400).send(error.details.slice().shift().message);
     try {
         const newCustomer = new Customer({
             isGold: req.body.isGold,
             name: req.body.name,
             phone: req.body.phone,
         });
-        const result = await newCustomer.save();
-        return res.status(200).send(result);
+        await newCustomer.save();
+        return res.status(200).send(newCustomer);
     }catch (e) {
         return res.status(400).send('No Customers is been saved');
     }
@@ -29,8 +29,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const id = req.params.id;
-    const result = validate(req.body);
-    if (result.error) return res.status(400).send(result.error.details.slice().shift().message);
+    const {result} = validate(req.body);
+    if (error) return res.status(400).send(error.details.slice().shift().message);
     try {
         const updatedCustomer = await Customer.findOneAndUpdate({_id: id}, {
             name: req.body.name,

@@ -32,8 +32,8 @@ router.post('/', async (req, res) => {
             numberInStock: req.body.numberInStock,
             dailyRentalRate: req.body.dailyRentalRate
         });
-        const result = await movie.save();
-        res.status(200).send(result);
+        await movie.save();
+        res.status(200).send(movie);
     } catch (e) {
         return res.status(400).send('No movies has been saved');
     }

@@ -12,12 +12,12 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const result = validate(req.body);
-    if (result.error) return res.status(400).send(result.error.details.slice().shift().message);
+    const {error} = validate(req.body);
+    if (error) return res.status(400).send(error.details.slice().shift().message);
     try {
         const newGenre = new Genre({name: req.body.name});
-        const result = await newGenre.save();
-        return res.status(200).send(result);
+        await newGenre.save();
+        return res.status(200).send(newGenre);
     } catch (e) {
         return res.status(400).send('No Genres is been saved');
     }
@@ -25,8 +25,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const id = req.params.id;
-    const result = validate(req.body);
-    if (result.error) return res.status(400).send(result.error.details.slice().shift().message);
+    const {error} = validate(req.body);
+    if (error) return res.status(400).send(error.details.slice().shift().message);
     try {
         const updatedGenre = await Genre.findOneAndUpdate({_id: id}, {name: req.body.name});
         return res.status(200).send(updatedGenre);

@@ -1,7 +1,5 @@
-const Joi = require('joi');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true});
-mongoose.set('debug', true);
+const Joi = require('joi');
 const {genreSchema} = require('./genre');
 
 const movieSchema = new mongoose.Schema({
@@ -34,7 +32,7 @@ const Movie = mongoose.model('Movies', movieSchema);
 const validateMovie = (movie) => {
     const schema = {
         title: Joi.string().min(3).max(255).required(),
-        genreId: Joi.string().required(),
+        genreId: Joi.objectId().required(),
         numberInStock: Joi.number().min(0).required(),
         dailyRentalRate: Joi.number().min(0).required(),
     };

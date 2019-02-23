@@ -1,7 +1,5 @@
-const Joi = require('joi');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true});
-mongoose.set('debug', true);
+const Joi = require('joi');
 
 const genreSchema = new mongoose.Schema({
     name: {
