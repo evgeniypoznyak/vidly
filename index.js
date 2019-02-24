@@ -5,10 +5,12 @@ Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/vidly', {useNewUrlParser: true});
 mongoose.set('debug', true);
+mongoose.set('useCreateIndex', true);
 const genres = require('./routes/genres');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const customers = require('./routes/customers');
+const users = require('./routes/users');
 const home = require('./routes/home');
 
 app.use(express.json());
@@ -17,6 +19,7 @@ app.use('/api/genres', genres);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/customers', customers);
+app.use('/api/users', users);
 
 
 const port = process.env.PORT || 3000;
