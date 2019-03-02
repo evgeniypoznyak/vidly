@@ -1,3 +1,5 @@
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
@@ -24,6 +26,13 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
 });
+userSchema.methods.generateAuthToken = function () {
+    return jwt.sign(
+        {id: this._id}, // payload. Could be anything what we need store and pass via token
+        config.get('jwtPrivateKey') // secret key
+    );
+};
+
 const User = mongoose.model('Users', userSchema);
 
 const validateUser = (user) => {
