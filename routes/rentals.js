@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../middleware/auth');
+
 const Fawn = require('fawn');
 const mongoose = require('mongoose');
 const {Movie} = require('../models/movie');
@@ -17,7 +19,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details.slice().shift().message);
 
