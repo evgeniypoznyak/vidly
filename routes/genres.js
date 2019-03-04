@@ -15,13 +15,11 @@ router.get('/', async (req, res) => {
 router.post('/', auth, async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details.slice().shift().message);
-    try {
-        const newGenre = new Genre({name: req.body.name});
-        await newGenre.save();
-        return res.status(200).send(newGenre);
-    } catch (e) {
-        return res.status(400).send('No Genres is been saved');
-    }
+    let genre = await Genre.findOne({name: req.body.name});
+    if (genre) return res.status(400).send('Genre already exist');
+    genre = new Genre({name: req.body.name});
+    await genre.save();
+    return res.status(200).send(genre);
 });
 
 router.put('/:id', auth, async (req, res) => {
