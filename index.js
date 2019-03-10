@@ -1,3 +1,4 @@
+require('express-async-errors');
 const config = require('config');
 const express = require('express');
 const app = express();
@@ -14,6 +15,19 @@ const customers = require('./routes/customers');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const home = require('./routes/home');
+const logger = require('./middleware/logging');
+const error = require('./middleware/error');
+
+process.on('uncaughtException', (ex) => {
+    logger.log({
+        level: 'error',
+        message: ex.message,
+        meta: ex
+    });
+});
+
+// throw new Error('poop');
+
 
 if (!config.get('jwtPrivateKey')){
     console.error('FATAL ERROR: jwtPrivateKey is not defined!');
@@ -28,7 +42,7 @@ app.use('/api/rentals', rentals);
 app.use('/api/customers', customers);
 app.use('/api/auth', auth);
 app.use('/api/users', users);
-
+app.use(error); // must be after all routes and middleware(s)
 
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || 'http://localhost';
