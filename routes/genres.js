@@ -6,7 +6,7 @@ const asyncMiddleware = require('../middleware/async');
 const {Genre, validate} = require('../models/genre');
 
 router.get('/', async (req, res) => {
-    throw new Error('Oups!');
+    // throw new Error('Oups!');
     const genres = await Genre.find().select({name: 1}).sort({name: 1});
     return res.send(genres);
 });
